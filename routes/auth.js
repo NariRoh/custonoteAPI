@@ -11,7 +11,6 @@ module.exports = express => {
 
         User.findByCredentials(body.email, body.password).then(user => {
             return user.generateAuthToken().then(token => {
-                console.log(token);
                 res.header('x-auth', token).send(user);
             });
         }).catch(err => {

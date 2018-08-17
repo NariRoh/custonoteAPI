@@ -2,6 +2,7 @@ const mongoose = require("mongoose");
 const validator = require("validator");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
+const _ = require('lodash');
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -60,6 +61,13 @@ const UserSchema = new mongoose.Schema({
   ]
 });
 
+UserSchema.methods.toJSON = function() {
+  const user = this;
+  const userObj = user.toObject();
+
+  return _.pick(userObj, ['_id', 'email']);
+}
+
 UserSchema.methods.generateAuthToken = function () {
   const user = this;
   const generatedToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET).toString();
@@ -79,12 +87,7 @@ UserSchema.statics.findByCredentials = function(email, password) {
     
     return new Promise((resolve, reject) => {
       bcrypt.compare(password, user.password, (err, res) => {
-        if (res) {
-          console.log('password matched');
-          resolve(user);
-        } else {
-          reject('password not matched');
-        }
+        res ? resolve(user) : reject("password not matched");
       });
     });
   });
