@@ -31,8 +31,8 @@ const users = [
     username: "NariRoh",
     email: "nariroh@gmail.com",
     password: hashPassword("password2"),
-    token: jwt.sign({ id: ids[1] }, process.env.JWT_SECRET)
-    // token: null
+    // token: jwt.sign({ id: ids[1] }, process.env.JWT_SECRET)
+    token: null
   },
   {
     _id: ids[2],

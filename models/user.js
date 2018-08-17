@@ -24,7 +24,7 @@ const UserSchema = new mongoose.Schema({
   },
   token: {
     type: String,
-    required: true
+    // required: true
   },
   notes: [
     {
@@ -59,6 +59,15 @@ const UserSchema = new mongoose.Schema({
     }
   ]
 });
+
+UserSchema.methods.generateAuthToken = function () {
+  const user = this;
+  const generatedToken = jwt.sign({ _id: user._id }, process.env.JWT_SECRET).toString();
+
+  user.token = generatedToken;
+
+  return user.save().then(() => generatedToken);
+};
 
 UserSchema.statics.findByCredentials = function(email, password) {
   const User = this;
