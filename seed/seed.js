@@ -23,28 +23,28 @@ const users = [
     username: "Jethro",
     email: "jethro@gmail.com",
     password: hashPassword("password1"),
-    token: jwt.sign({ id: ids[0] }, process.env.SECRET_KEY)
+    token: jwt.sign({ id: ids[0] }, process.env.JWT_SECRET)
   },
   {
     _id: ids[1],
     username: "NariRoh",
     email: "nariroh@gmail.com",
     password: hashPassword("password2"),
-    token: jwt.sign({ id: ids[1] }, process.env.SECRET_KEY)
+    token: jwt.sign({ id: ids[1] }, process.env.JWT_SECRET)
   },
   {
     _id: ids[2],
     username: "JonMaldia",
     email: "jonmaldia@gmail.com",
     password: hashPassword("password3"),
-    token: jwt.sign({ id: ids[2] }, process.env.SECRET_KEY)
+    token: jwt.sign({ id: ids[2] }, process.env.JWT_SECRET)
   },
   {
     _id: ids[3],
     username: "Alexever",
     email: "alexever@gmail.com",
     password: hashPassword("password4"),
-    token: jwt.sign({ id: ids[3] }, process.env.SECRET_KEY)
+    token: jwt.sign({ id: ids[3] }, process.env.JWT_SECRET)
   }
 ];
 
