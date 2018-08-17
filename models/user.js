@@ -60,6 +60,27 @@ const UserSchema = new mongoose.Schema({
   ]
 });
 
+UserSchema.statics.findByCredentials = function(email, password) {
+  const User = this;
+
+  return User.findOne({ email }).then(user => {
+    if (!user) {
+      return Promise.reject('User not found');
+    }
+    
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, user.password, (err, res) => {
+        if (res) {
+          console.log('password matched');
+          resolve(user);
+        } else {
+          reject('password not matched');
+        }
+      });
+    });
+  });
+};
+
 UserSchema.pre("save", function(next) {
   const user = this;
 

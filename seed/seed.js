@@ -24,6 +24,7 @@ const users = [
     email: "jethro@gmail.com",
     password: hashPassword("password1"),
     token: jwt.sign({ id: ids[0] }, process.env.JWT_SECRET)
+    // token: null
   },
   {
     _id: ids[1],
@@ -31,6 +32,7 @@ const users = [
     email: "nariroh@gmail.com",
     password: hashPassword("password2"),
     token: jwt.sign({ id: ids[1] }, process.env.JWT_SECRET)
+    // token: null
   },
   {
     _id: ids[2],
@@ -38,6 +40,7 @@ const users = [
     email: "jonmaldia@gmail.com",
     password: hashPassword("password3"),
     token: jwt.sign({ id: ids[2] }, process.env.JWT_SECRET)
+    // token: null
   },
   {
     _id: ids[3],
@@ -45,6 +48,7 @@ const users = [
     email: "alexever@gmail.com",
     password: hashPassword("password4"),
     token: jwt.sign({ id: ids[3] }, process.env.JWT_SECRET)
+    // token: null
   }
 ];
 

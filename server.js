@@ -16,5 +16,5 @@ app.use("/auth", authRoutes);
 
 app.listen(port, () => {
   require("./db/mongoose");
-  populateUsers();
+  // populateUsers();
 });

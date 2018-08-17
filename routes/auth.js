@@ -1,11 +1,19 @@
 const express = require("express");
+const _ = require('lodash');
 
-module.exports = function (express) {
+const User = require('../models/user');
+
+module.exports = express => {
     const router = express.Router();
     
     router.post('/login', (req, res) => {
-        res.send(req.body);
-        console.log('test', req.body)
+        const body = _.pick(req.body, ["email", "password"]);
+
+        User.findByCredentials(body.email, body.password).then(user => {
+            res.send(user);
+        }).catch(err => {
+            res.status(400).send(err);
+        });
     });
 
     return router;
