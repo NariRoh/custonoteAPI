@@ -1,7 +1,8 @@
-const mongoose = require("mongoose");
-const validator = require("validator");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcryptjs");
+const mongoose = require('mongoose');
+const validator = require('validator');
+const jwt = require('jsonwebtoken');
+const bcrypt = require('bcryptjs');
+const _ = require('lodash');
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -13,17 +14,18 @@ const UserSchema = new mongoose.Schema({
     type: String,
     validate: {
       validator: validator.isEmail,
-      message: "{VALUE} is not a valid email"
+      message: '{VALUE} is not a valid email'
     },
-    required: true
+    required: true,
+    unique: true
   },
   password: {
     type: String,
     required: true
   },
   token: {
-    type: String,
-    required: true
+    type: String
+    // required: true
   },
   notes: [
     {
@@ -59,10 +61,44 @@ const UserSchema = new mongoose.Schema({
   ]
 });
 
-UserSchema.pre("save", function(next) {
+UserSchema.methods.toJSON = function() {
+  const user = this;
+  const userObj = user.toObject();
+
+  return _.pick(userObj, ['_id', 'email']);
+};
+
+UserSchema.methods.generateAuthToken = function() {
+  const user = this;
+  const generatedToken = jwt
+    .sign({ _id: user._id }, process.env.JWT_SECRET)
+    .toString();
+
+  user.token = generatedToken;
+
+  return user.save().then(() => generatedToken);
+};
+
+UserSchema.statics.findByCredentials = function(email, password) {
+  const User = this;
+
+  return User.findOne({ email }).then(user => {
+    if (!user) {
+      return Promise.reject('User not found');
+    }
+
+    return new Promise((resolve, reject) => {
+      bcrypt.compare(password, user.password, (err, res) => {
+        res ? resolve(user) : reject('password not matched');
+      });
+    });
+  });
+};
+
+UserSchema.pre('save', function(next) {
   const user = this;
 
-  if (user.isModified("password")) {
+  if (user.isModified('password')) {
     bcrypt.genSalt(10, (err, salt) => {
       bcrypt.hash(user.password, salt, (err, hash) => {
         user.password = hash;
@@ -74,6 +110,6 @@ UserSchema.pre("save", function(next) {
   }
 });
 
-const User = mongoose.model("User", UserSchema);
+const User = mongoose.model('User', UserSchema);
 
 module.exports = User;
