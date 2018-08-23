@@ -2,6 +2,11 @@
   "name": "custonoteAPI",
   "version": "1.0.0",
   "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "cross-env NODE_ENV=test mocha tests/*.test.js",
+    "test-watch": "nodemon --exec \"yarn test\""
+  },
   "repository": "git@github.com:custonote/custonoteAPI.git",
   "author": "Jethro W. Fredericks <fredericks22.jethro@gmail.com>",
   "license": "MIT",
