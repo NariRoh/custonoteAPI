@@ -21,12 +21,9 @@ module.exports = express => {
       let user = new User();
       const body = _.pick(req.body, ["email", "password"]);
 
-      // When someone registers:
-      // TODO: Create a token
-      // TODO: Add the user to the db  
-
       user.email = body.email;
       user.password = body.password;
+      user.token = user.generateAuthToken();
   });
 
   return router;
