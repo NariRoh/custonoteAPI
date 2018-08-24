@@ -24,6 +24,10 @@ module.exports = express => {
       user.email = body.email;
       user.password = body.password;
       user.token = user.generateAuthToken();
+
+      user.save(err => {
+        if (err) throw err;
+      });
   });
 
   return router;
