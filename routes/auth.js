@@ -1,21 +1,35 @@
-const _ = require('lodash');
+const _ = require("lodash");
 
-const User = require('../models/user');
+const User = require("../models/user");
 
 module.exports = express => {
-  const router = express.Router();
+    const router = express.Router();
 
-  router.post('/login', (req, res) => {
-    const body = _.pick(req.body, ['email', 'password']);
+    router.post("/login", (req, res) => {
+        const body = _.pick(req.body, ["email", "password"]);
 
-    User.findByCredentials(body.email, body.password)
-      .then(user => {
-        res.header('x-auth', user.token).send();
-      })
-      .catch(err => {
-        res.status(400).send(err);
-      });
-  });
+        User.findByCredentials(body.email, body.password)
+            .then(user => {
+                res.header("x-auth", user.token).send();
+            })
+            .catch(err => {
+                res.status(400).send(err);
+            });
+    });
 
-  return router;
+    router.get(
+        "/github",
+        passport.authenticate("github", { scope: ["profile"] })
+    );
+
+    router.get(
+        "/github/redirect",
+        passport.authenticate("github", { failureRedirect: "/login" }),
+        (req, res) => {
+            // When success, redirect to home
+            res.redirect("/");
+        }
+    );
+
+    return router;
 };

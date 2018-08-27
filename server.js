@@ -8,7 +8,6 @@ if (env === 'test') {
 
 const express = require('express');
 const bodyParser = require('body-parser');
-
 // const { populateUsers } = require("./seed/seed");
 
 // Importing routes
