@@ -17,20 +17,20 @@ module.exports = express => {
       });
   });
     
-  router.post('/register', (req, res) => {
-      const body = _.pick(req.body, ["email", "password"]);
-      let user = new User(body);
+  // router.post('/register', (req, res) => {
+  //     const body = _.pick(req.body, ["email", "password"]);
+  //     let user = new User(body);
 
-      user.token = user.generateAuthToken();
+  //     user.token = user.generateAuthToken();
 
-      user.save(err => {
-        if (err) {
-          throw 'Sorry, your registration failed. Please try again.';
-        } else {
-          res.send(user); 
-        }
-      });
-  });
+  //     user.save(err => {
+  //       if (err) {
+  //         throw 'Sorry, your registration failed. Please try again.';
+  //       } else {
+  //         res.send(user); 
+  //       }
+  //     });
+  // });
 
   return router;
 };
