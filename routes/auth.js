@@ -18,11 +18,9 @@ module.exports = express => {
   });
     
   router.post('/register', (req, res) => {
-      let user = new User();
       const body = _.pick(req.body, ["email", "password"]);
+      let user = new User(body);
       
-      user.email = body.email;
-      user.password = body.password;
       user.token = user.generateAuthToken();
 
       user.save(err => {
