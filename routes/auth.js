@@ -1,4 +1,5 @@
 const _ = require("lodash");
+const passport = require('passport');
 
 const User = require("../models/user");
 
@@ -17,9 +18,11 @@ module.exports = express => {
             });
     });
 
-    router.get(
-        "/github",
-        passport.authenticate("github", { scope: ["profile"] })
+    router.get( "/github",
+        // passport.authenticate("github", { scope: ["profile"] }
+        (req, res) => {
+            res.send('login with github')
+        }
     );
 
     router.get(
