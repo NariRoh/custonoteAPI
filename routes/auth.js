@@ -18,13 +18,12 @@ router.post("/login", (req, res) => {
 
 router.get(
     "/github",
-    passport.authenticate("github", { scope: ["profile"] })
+    passport.authenticate("github", { scope: ["user: email"] })
 );
 
 router.get(
     "/github/redirect",
-    passport.authenticate("github"),
-    // passport.authenticate("github", { failureRedirect: "/login" }),
+    passport.authenticate("github", { failureRedirect: "/login" }),
     (req, res) => {
         // When success, redirect to home
         // res.redirect("/");
