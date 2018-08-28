@@ -27,6 +27,13 @@ const UserSchema = new mongoose.Schema({
     type: String
     // required: true
   },
+  github: {
+    id: String,
+    email: String,
+    username: String,
+    token: String,
+    thumbnail: String
+  },
   notes: [
     {
       heading: {
