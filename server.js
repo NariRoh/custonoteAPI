@@ -8,10 +8,11 @@ if (env === 'test') {
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const passportSetup = require("./config/passport");
 // const { populateUsers } = require("./seed/seed");
 
 // Importing routes
-const authRoutes = require('./routes/auth')(express);
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const port = process.env.PORT || 3000;
