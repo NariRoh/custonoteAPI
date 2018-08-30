@@ -18,8 +18,8 @@ const authRoutes = require('./routes/auth');
 const app = express();
 const port = process.env.PORT || 3000;
 
-app.use(passport.initialize());
 app.use(bodyParser.json());
+app.use(passport.initialize());
 app.use('/auth', authRoutes);
 
 app.listen(port, () => {

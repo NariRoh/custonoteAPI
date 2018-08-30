@@ -54,3 +54,5 @@ router.get(
         console.log("accessToken: ", req.user.token);
     }
 );
+
+module.exports = router;
