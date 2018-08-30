@@ -18,16 +18,20 @@ router.post("/login", (req, res) => {
 
 router.get(
     "/github",
-    passport.authenticate("github", { scope: ["user: email"] })
+    passport.authenticate("github", { scope: ["user:email"] })
 );
 
 router.get(
     "/github/redirect",
-    passport.authenticate("github", { failureRedirect: "/login" }),
+    passport.authenticate("github", { 
+        // 👇 uncomment when we have those routes
+        // failureRedirect: "/login", 
+        // successRedirect: "/",
+        session: false 
+    }),
     (req, res) => {
-        // When success, redirect to home
-        // res.redirect("/");
-        console.log("callback URI");
+        res.send('Logged in with github')
+        console.log("accessToken: ", req.user.token);
     }
 );
 

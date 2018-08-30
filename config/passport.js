@@ -7,35 +7,37 @@ const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET;
 
 passport.use(
     new GitHubStrategy(
-        {   
+        {
             clientID: GITHUB_CLIENT_ID,
             clientSecret: GITHUB_CLIENT_SECRET,
-            callbackURL: "/auth/github/redirect"
-        }, 
+            callbackURL: "/auth/github/redirect",
+        },
         (accessToken, refreshToken, profile, done) => {
-            // console.log("logged in with github");
-            // process.nextTick(() => {
-                User.findOne({ githubId: profile.id }).then(user => {
-                    if (user) {
-                        console.log("user found");
-                        return done(null, user);
-                    }
+            process.nextTick(() => {
+                
+                // 👇 from here to the end, will modify with new User model
+                User.findOne({ email: profile.emails[0].value })
+                    .then(existingUser => {
+                        if (existingUser) {
+                            console.log("user found");
+                            return done(null, existingUser);
+                        }
 
-                    new User({
-                        githubId: profile.id,
-                        email: profile.emails[0].value,
-                        username: profile.displayName,
-                        token: accessToken,
-                        password: "123asd"
-                        // 👆 will be removed once we figure it out
+                        new User({
+                            githubId: profile.id,
+                            email: profile.emails[0].value,
+                            username: profile.displayName,
+                            token: accessToken,
+                            password: "123asd"
+                        })
+                            .save()
+                            .then(newUser => {
+                                console.log("created new user", newUser);
+                                done(null, newUser);
+                            });
                     })
-                        .save()
-                        .then(newUser => {
-                            console.log("created new user", newUser);
-                            done(null, newUser);
-                        });
-                });
-            // });
+                    .catch(err => console.log(err));
+            });
         }
     )
 );
