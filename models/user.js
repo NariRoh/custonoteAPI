@@ -19,13 +19,47 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  password: {
-    type: String,
-    required: true
+  local: {
+    password: {
+      type: String,
+      required: true
+    }
+  },
+  github: {
+    githubID: {
+      type: String,
+      required: true
+    }
+  },
+  google: {
+    googleID: {
+      type: String,
+      required: true
+    },
+    thumbnail: {
+      type: String,
+      validate: {
+        validator: validator.isURL,
+        message: '"{VALUE}" is not a valid url'
+      }
+    }
+  },
+  facebook: {
+    facebookID: {
+      type: String,
+      required: true
+    },
+    thumbnail: {
+      type: String,
+      validate: {
+        validator: validator.isURL,
+        message: '"{VALUE}" is not a valid url'
+      }
+    }
   },
   token: {
-    type: String
-    // required: true
+    type: String,
+    required: true
   },
   notes: [
     {
