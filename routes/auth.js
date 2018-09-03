@@ -51,7 +51,6 @@ router.get(
     }),
     (req, res) => {
         res.send('Logged in with github')
-        console.log("accessToken: ", req.user.token);
     }
 );
 

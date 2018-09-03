@@ -14,8 +14,6 @@ passport.use(
         },
         (accessToken, refreshToken, profile, done) => {
             process.nextTick(() => {
-                
-                // 👇 from here to the end, will modify with new User model
                 User.findOne({ email: profile.emails[0].value })
                     .then(existingUser => {
                         if (existingUser) {
@@ -24,17 +22,15 @@ passport.use(
                         }
 
                         new User({
-                            githubId: profile.id,
-                            email: profile.emails[0].value,
                             username: profile.displayName,
-                            token: accessToken,
-                            password: "123asd"
+                            email: profile.emails[0].value,
+                            'github.githubID': profile.id
                         })
-                            .save()
-                            .then(newUser => {
-                                console.log("created new user", newUser);
-                                done(null, newUser);
-                            });
+                        .generateAuthToken()
+                        .then(newUser => {
+                            console.log("created new user", newUser);
+                            done(null, newUser);
+                        })
                     })
                     .catch(err => console.log(err));
             });
