@@ -19,19 +19,19 @@ const UserSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  local: {
+  local: [{
     password: {
       type: String,
       required: true
     }
-  },
-  github: {
+  }],
+  github: [{
     githubID: {
       type: String,
       required: true
     }
-  },
-  google: {
+  }],
+  google: [{
     googleID: {
       type: String,
       required: true
@@ -43,8 +43,8 @@ const UserSchema = new mongoose.Schema({
         message: '"{VALUE}" is not a valid url'
       }
     }
-  },
-  facebook: {
+  }],
+  facebook: [{
     facebookID: {
       type: String,
       required: true
@@ -56,7 +56,7 @@ const UserSchema = new mongoose.Schema({
         message: '"{VALUE}" is not a valid url'
       }
     }
-  },
+  }],
   token: {
     type: String,
     required: true
