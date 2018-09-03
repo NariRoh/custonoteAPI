@@ -1,5 +1,7 @@
 const passport = require("passport");
+const passportJWT = require('passport-jwt');
 const GitHubStrategy = require("passport-github2").Strategy;
+
 const User = require("../models/user");
 
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID;
@@ -26,14 +28,40 @@ passport.use(
                             email: profile.emails[0].value,
                             'github.githubID': profile.id
                         })
-                        .generateAuthToken()
-                        .then(newUser => {
-                            console.log("created new user", newUser);
-                            done(null, newUser);
-                        })
+                            .generateAuthToken()
+                            .then(newUser => {
+                                console.log("created new user", newUser);
+                                done(null, newUser);
+                            })
                     })
                     .catch(err => console.log(err));
             });
         }
     )
 );
+
+
+const ExtractJwt = passportJWT.ExtractJwt;
+const JWTStrategy = passportJWT.Strategy;
+
+const options = {
+    jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
+    secretOrKey: process.env.JWT_SECRET
+};
+
+const JwtStrategy = new JWTStrategy(options, (payload, next) => {
+    console.log('payload received', payload);
+    const id = payload.id;
+    User.findOne({ _id: id }).then(user => {
+        console.log('user', user);
+        if (user) {
+            next(null, user);
+        } else {
+            next(null, false);
+        }
+    });
+});
+
+module.exports = {
+  JwtStrategy
+};
