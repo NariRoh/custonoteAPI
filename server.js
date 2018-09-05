@@ -8,16 +8,18 @@ if (env === 'test') {
 
 const express = require('express');
 const bodyParser = require('body-parser');
-
+const passport = require('passport');
+const passportSetup = require("./config/passport");
 // const { populateUsers } = require("./seed/seed");
 
 // Importing routes
-const authRoutes = require('./routes/auth')(express);
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
+app.use(passport.initialize());
 app.use('/auth', authRoutes);
 
 app.listen(port, () => {
