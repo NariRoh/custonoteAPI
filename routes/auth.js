@@ -45,7 +45,7 @@ router.get(
     "/github/redirect",
     passport.authenticate("github", {
         // 👇 uncomment when we have those routes
-        // failureRedirect: "/login", 
+        // failureRedirect: "/login",
         // successRedirect: "/",
         session: false
     }),

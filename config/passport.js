@@ -26,37 +26,31 @@ const JwtStrategy = new JWTStrategy(options, (payload, next) => {
     });
 });
 
-module.exports = {
-    JwtStrategy
-};
-
 passport.use(
     new GitHubStrategy({
-            clientID: process.env.GITHUB_CLIENT_ID,
-            clientSecret: process.env.GITHUB_CLIENT_SECRET,
-            callbackURL: '/auth/github/redirect'
-        }, (accessToken, refreshToken, profile, done) => {
-            process.nextTick(() => {
-                findOrCreatUser(profile, done, 'github');
-            });
-        }
-    )
+        clientID: process.env.GITHUB_CLIENT_ID,
+        clientSecret: process.env.GITHUB_CLIENT_SECRET,
+        callbackURL: '/auth/github/redirect'
+    }, (accessToken, refreshToken, profile, done) => {
+        process.nextTick(() => {
+            findOrCreateUser(profile, done);
+        });
+    })
 );
 
 passport.use(
     new GoogleStrategy({
-            clientID: process.env.GOOGLE_CLIENT_ID,
-            clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: '/auth/google/redirect'
-        }, (accessToken, refreshToken, profile, done) => {
-            process.nextTick(() => {
-                findOrCreatUser(profile, done, 'google');
-            });
-        }
-    )
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: '/auth/google/redirect'
+    }, (accessToken, refreshToken, profile, done) => {
+        process.nextTick(() => {
+            findOrCreateUser(profile, done);
+        });
+    })
 );
 
-const findOrCreatUser = (profile, done, provider) => {
+const findOrCreateUser = (profile, done) => {
     User.findOne({ email: profile.emails[0].value })
         .then(user => {
             if (user) {
@@ -66,8 +60,7 @@ const findOrCreatUser = (profile, done, provider) => {
                 new User({
                     username: profile.displayName,
                     email: profile.emails[0].value,
-                    [`${provider}.${provider}ID`]: profile.id,
-                    [`${provider}.thumbnail`]: profile.photos[0].value
+                    thumbnail: profile.photos[0].value
                 })
                     .generateAuthToken()
                     .then(newUser => {
@@ -77,4 +70,9 @@ const findOrCreatUser = (profile, done, provider) => {
             }
         })
         .catch(err => done(err));
+};
+
+
+module.exports = {
+    JwtStrategy
 };
