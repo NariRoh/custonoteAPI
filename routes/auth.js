@@ -53,4 +53,19 @@ router.get(
   }
 );
 
+router.get('/google',
+  passport.authenticate('google', { scope: ['profile', 'email'] })
+);
+
+router.get('/google/redirect',
+  passport.authenticate('google', {
+    // 👇 uncomment when we have those routes
+    // failureRedirect: '/login',
+    // successRedirect: '/',
+    session: false
+  }), (req, res) => {
+    res.send('Logged in with google');
+  }
+);
+
 module.exports = router;
