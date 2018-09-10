@@ -51,8 +51,9 @@ const UserSchema = new mongoose.Schema({
         default: false
       },
       createdAt: {
-        type: Number,
-        required: true
+        type: Date,
+        required: true,
+        default: Date.now
       },
       lastUpdatedAt: {
         type: Number

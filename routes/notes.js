@@ -6,8 +6,7 @@ router.post('/create', (req, res) => {
     const { user, body } = req;
     const note = {
         heading: body.heading,
-        body: body.body,
-        createdAt: Date.now()
+        body: body.body
     };
 
     user.notes.push(note);
