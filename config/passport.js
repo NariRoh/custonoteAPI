@@ -17,10 +17,10 @@ const options = {
 // const JwtStrategy = new JWTStrategy(options, (payload, next) => {
 passport.use(
   new JWTStrategy(options, (payload, next) => {
-    console.log('payload received', payload);
+    // console.log('payload received', payload);
     const id = payload._id;
     User.findById(id).then(user => {
-      console.log('user', user);
+      // console.log('user', user);
       if (user) {
           next(null, user);
       } else {

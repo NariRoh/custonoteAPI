@@ -1,23 +1,25 @@
 const router = require('express').Router();
-const jwt = require('jsonwebtoken');
 
 const User = require('../models/user');
 
 router.post('/create', (req, res) => {
-    console.log('===========user===========', req.user)    
-    // const note = {
-    //     heading: req.body.heading,
-    //     body: req.body.body,
-    //     createdAt: new Date()
-    // };
-    // const user = 
+    const { user, body } = req;
+    const note = {
+        heading: body.heading,
+        body: body.body,
+        createdAt: Date.now()
+    };
 
-    // user.notes = note;
-    // user.save().then(note => {
-    //     res.json(note);
-    // }, err => {
-    //     res.status(400).send(err);
-    // });
+    user.notes.push(note);
+    user.save()
+        .then(userObj => {
+            // reverse the order of the notes and send the latest one (created one)
+            userObj.notes.reverse();
+            res.json(userObj.notes[0]);
+        })
+        .catch(err => {
+            res.status(400).send(err)
+        });
 });
 
 module.exports = router;
