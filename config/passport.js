@@ -14,18 +14,21 @@ const options = {
   secretOrKey: process.env.JWT_SECRET
 };
 
-const JwtStrategy = new JWTStrategy(options, (payload, next) => {
-  console.log('payload received', payload);
-  const id = payload.id;
-  User.findOne({ _id: id }).then(user => {
-    console.log('user', user);
-    if (user) {
-      next(null, user);
-    } else {
-      next(null, false);
-    }
-  });
-});
+// const JwtStrategy = new JWTStrategy(options, (payload, next) => {
+passport.use(
+  new JWTStrategy(options, (payload, next) => {
+    console.log('payload received', payload);
+    const id = payload._id;
+    User.findById(id).then(user => {
+      console.log('user', user);
+      if (user) {
+          next(null, user);
+      } else {
+          next(null, false);
+      }
+    });
+  })
+);
 
 passport.use(
   new GitHubStrategy(
@@ -57,6 +60,6 @@ passport.use(
   )
 );
 
-module.exports = {
-  JwtStrategy
-};
+// module.exports = {
+//   JwtStrategy
+// };
