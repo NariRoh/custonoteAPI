@@ -14,6 +14,7 @@ const passportSetup = require("./config/passport");
 
 // Importing routes
 const authRoutes = require('./routes/auth');
+const notesRoutes = require('./routes/notes');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -21,6 +22,7 @@ const port = process.env.PORT || 3000;
 app.use(bodyParser.json());
 app.use(passport.initialize());
 app.use('/auth', authRoutes);
+app.use('/notes', passport.authenticate('jwt', { session: false }), notesRoutes);
 
 app.listen(port, () => {
   console.log(`Server is live on ${port}`);
