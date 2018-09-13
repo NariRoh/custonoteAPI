@@ -97,7 +97,7 @@ UserSchema.statics.findByCredentials = function(email, password) {
     }
 
     return new Promise((resolve, reject) => {
-      bcrypt.compare(password, user.password, (err, res) => {
+      bcrypt.compare(password, user.local.password, (err, res) => {
         res ? resolve(user) : reject('password not matched');
       });
     });
@@ -107,10 +107,10 @@ UserSchema.statics.findByCredentials = function(email, password) {
 UserSchema.pre('save', function(next) {
   const user = this;
 
-  if (user.isModified('password')) {
+  if (user.isModified('local.password')) {
     bcrypt.genSalt(10, (err, salt) => {
-      bcrypt.hash(user.password, salt, (err, hash) => {
-        user.password = hash;
+      bcrypt.hash(user.local.password, salt, (err, hash) => {
+        user.local.password = hash;
         next();
       });
     });
