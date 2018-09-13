@@ -14,7 +14,6 @@ const options = {
   secretOrKey: process.env.JWT_SECRET
 };
 
-// const JwtStrategy = new JWTStrategy(options, (payload, next) => {
 passport.use(
   new JWTStrategy(options, (payload, next) => {
     // console.log('payload received', payload);
@@ -59,7 +58,3 @@ passport.use(
     }
   )
 );
-
-// module.exports = {
-//   JwtStrategy
-// };
