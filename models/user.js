@@ -56,7 +56,7 @@ const UserSchema = new mongoose.Schema({
         default: Date.now
       },
       lastUpdatedAt: {
-        type: Number
+        type: Date
       },
       previousVersion: {
         type: String,
