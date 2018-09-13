@@ -1,5 +1,5 @@
 const router = require('express').Router();
-
+const { ObjectID } = require('mongodb');
 const User = require('../models/user');
 const { DBErrorParser } = require('../utils/utils');
 
@@ -22,6 +22,17 @@ router.post('/create', (req, res) => {
       const errors = DBErrorParser(err);
       res.status(400).send(errors);
     });
+});
+
+router.get('/', (req, res) => {
+  try {
+    const { notes } = req.user;
+    res.json({ notes });
+    
+  } catch (err) {
+    const errors = DBErrorParser(err);
+    res.status(400).send(errors);
+  }
 });
 
 module.exports = router;
