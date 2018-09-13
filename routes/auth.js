@@ -18,14 +18,14 @@ router.post('/login', (req, res) => {
 });
 
 router.post('/register', (req, res) => {
-  const body = _.pick(req.body, ['username', 'email', 'password']);
+  const body = _.pick(req.body, ['username', 'email']);
+  body.local = {
+    password: req.body.password
+  };
   let user = new User(body);
 
   user
-    .save()
-    .then(() => {
-      return user.generateAuthToken();
-    })
+    .generateAuthToken()
     .then(token => {
       res.header('x-auth', token).send(user);
     })
@@ -53,17 +53,20 @@ router.get(
   }
 );
 
-router.get('/google',
+router.get(
+  '/google',
   passport.authenticate('google', { scope: ['profile', 'email'] })
 );
 
-router.get('/google/redirect',
+router.get(
+  '/google/redirect',
   passport.authenticate('google', {
     // 👇 uncomment when we have those routes
     // failureRedirect: '/login',
     // successRedirect: '/',
     session: false
-  }), (req, res) => {
+  }),
+  (req, res) => {
     res.send('Logged in with google');
   }
 );
