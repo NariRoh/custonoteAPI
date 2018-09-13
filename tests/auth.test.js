@@ -18,7 +18,7 @@ describe('/auth', () => {
     it('returns users auth token on successful login', done => {
       request(app)
         .post('/auth/login')
-        .send({ email: user.email, password: user.password })
+        .send({ email: user.email, password: user.local.password })
         .expect(200)
         .expect(res => {
           expect(res.headers['x-auth']).to.equal(user.token);
