@@ -16,28 +16,36 @@ const users = [
     _id: ids[0],
     username: 'Jethro',
     email: 'jethro@gmail.com',
-    password: 'password1',
+    local: {
+      password: 'password1'
+    },
     token: jwt.sign({ _id: ids[0] }, process.env.JWT_SECRET)
   },
   {
     _id: ids[1],
     username: 'NariRoh',
     email: 'nariroh@gmail.com',
-    password: 'password2',
+    local: {
+      password: 'password2'
+    },
     token: jwt.sign({ _id: ids[1] }, process.env.JWT_SECRET)
   },
   {
     _id: ids[2],
     username: 'JonMaldia',
     email: 'jonmaldia@gmail.com',
-    password: 'password3',
+    local: {
+      password: 'password3'
+    },
     token: jwt.sign({ _id: ids[2] }, process.env.JWT_SECRET)
   },
   {
     _id: ids[3],
     username: 'Alexever',
     email: 'alexever@gmail.com',
-    password: 'password4',
+    local: {
+      password: 'password4'
+    },
     token: jwt.sign({ _id: ids[3] }, process.env.JWT_SECRET)
   }
 ];
