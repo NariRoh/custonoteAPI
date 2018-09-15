@@ -1,3 +1,11 @@
+require('dotenv').config();
+/*======================================
+ 👆 When I first run the test file with `npm test` it throws this error
+ >> throw new TypeError('JwtStrategy requires a secret or key');
+ so I added above line then now it throws new error that I shared with you 
+ >> 1) Uncaught error outside test suite
+========================================*/
+
 const passport = require('passport');
 const passportJWT = require('passport-jwt');
 const GitHubStrategy = require('passport-github2').Strategy;

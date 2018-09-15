@@ -51,4 +51,31 @@ describe('/notes', () => {
         .end(done);
     });
   });
+
+  describe('PATCH /edit/:id', () => {
+    it('should update the note', done => {
+      note = notes[0];
+      const hexId = note._id.toHexString();
+      const heading = 'Updated heading';
+      const body = 'Updated body';
+
+      request(app)
+        .patch(`/notes/edit/${hexId}`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .send({ 
+          heading,
+          body,
+          pinned: true 
+        })
+        .expect(200)
+        .expect(res => {
+          expect(res.body.heading).toBe(heading);
+          expect(res.body.body).toBe(body);
+          expect(res.body.pinned).toBe(true);
+          expect(res.body.previousVersion).toBe(note.body);
+          expect(res.body.lastUpdatedAt).not.toBe(res.body.createdAt);
+        })
+        .end(done);
+    })
+  })
 });

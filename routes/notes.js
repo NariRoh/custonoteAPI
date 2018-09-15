@@ -25,8 +25,9 @@ router.post('/create', (req, res) => {
     });
 });
 
-// PATCH rotues
+// PATCH routes
 router.patch('/edit/:id', (req, res) => {
+  // console.log(req.user)
   const _id = req.params.id;
   const updates = req.body;
   const user = req.user;
@@ -40,9 +41,11 @@ router.patch('/edit/:id', (req, res) => {
       return false;
     })
     .toObject();
+
   if (!note) {
     res.status(404).send('Note not found');
   }
+
   const previousVersion = note.body;
   note = {
     ...note,
