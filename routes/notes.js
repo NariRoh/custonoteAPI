@@ -27,11 +27,11 @@ router.post('/create', (req, res) => {
 
 // PATCH routes
 router.patch('/edit/:id', (req, res) => {
-  // console.log(req.user)
   const _id = req.params.id;
   const updates = req.body;
   const user = req.user;
   let noteIndex;
+
   let note = user.notes
     .find((note, index) => {
       if (note._id.toHexString() === _id) {
@@ -40,19 +40,21 @@ router.patch('/edit/:id', (req, res) => {
       }
       return false;
     })
-    .toObject();
-
+    
   if (!note) {
-    res.status(404).send('Note not found');
-  }
-
+    return res.status(404).send('Note not found');
+  } 
+  
+  note = note.toObject();
   const previousVersion = note.body;
+
   note = {
     ...note,
     ...updates,
     previousVersion,
     lastUpdatedAt: new Date()
   };
+
   user.notes[noteIndex] = note;
 
   user
