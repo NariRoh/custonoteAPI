@@ -67,14 +67,17 @@ const populateUsers = done => {
 
 const notes = [
   {
+    _id: new ObjectID,
     body: 'This a test',
     heading: 'Test 1'
   },
   {
+    _id: new ObjectID,
     body: 'The quick brown fox jumps over the lazy dog',
     heading: 'Test 2'
   },
   {
+    _id: new ObjectID,
     body: 'Peter Piper picked a peck of pickled peppers',
     heading: 'Test 3'
   }
