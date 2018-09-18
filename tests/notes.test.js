@@ -12,6 +12,7 @@ describe('/notes', () => {
     this.timeout(0);
     user = users[1];
     populateUsers(done);
+    user.notes = notes;
   });
 
   describe('/create', () => {
@@ -54,28 +55,38 @@ describe('/notes', () => {
 
   describe('PATCH /edit/:id', () => {
     it('should update the note', done => {
-      note = notes[0];
+      note = user.notes[0];
       const hexId = note._id.toHexString();
-      const heading = 'Updated heading';
-      const body = 'Updated body';
+      const body = 'Edited body'
 
       request(app)
         .patch(`/notes/edit/${hexId}`)
         .set('Authorization', `Bearer ${user.token}`)
-        .send({ 
-          heading,
+        .send({
           body,
-          pinned: true 
+          pinned: true
         })
         .expect(200)
         .expect(res => {
-          expect(res.body.heading).toBe(heading);
-          expect(res.body.body).toBe(body);
-          expect(res.body.pinned).toBe(true);
-          expect(res.body.previousVersion).toBe(note.body);
-          expect(res.body.lastUpdatedAt).not.toBe(res.body.createdAt);
+          expect(res.body.body).to.equal(body);
+          expect(res.body.pinned).to.equal(true);
+          expect(res.body.previousVersion).to.equal(note.body);
+          expect(res.body.lastUpdatedAt).not.to.equal(res.body.createdAt);
         })
         .end(done);
-    })
+    });
+
+    it('should returns an error for unauthorised requests', done => {
+      const hexId = notes[1]._id.toHexString();
+
+      request(app)
+        .patch(`/notes/edit/${hexId}`)
+        .send({
+          heading: 'Updated heading',
+          body: 'Updated body'
+        })
+        .expect(401)
+        .end(done);
+    });
   })
 });
