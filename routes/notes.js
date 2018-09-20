@@ -30,8 +30,12 @@ router.post('/create', (req, res) => {
 router.get('/', (req, res) => {
   try {
     const { notes } = req.user;
-    res.json(notes);
-    
+    const sortedNotes = notes.sort((a, b) => {
+      return b.createdAt - a.createdAt
+    });
+
+    res.json(sortedNotes);
+
   } catch (err) {
     const errors = DBErrorParser(err);
     res.status(400).send(errors);
