@@ -88,5 +88,20 @@ describe('/notes', () => {
         .expect(401)
         .end(done);
     });
-  })
+  });
+
+  describe('GET /', () => {
+    it('should get all notes', done => {
+      const noteLen = user.notes.length;
+      
+      request(app)
+        .get('/notes')
+        .set('Authorization', `Bearer ${user.token}`)
+        .expect(200)
+        .expect(res => {
+          expect(res.body.length).to.equal(noteLen);
+        })
+        .end(done);
+    });
+  });
 });
