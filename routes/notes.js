@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { ObjectID } = require('mongodb');
 
 const User = require('../models/user');
 const { DBErrorParser } = require('../utils/utils');
@@ -23,6 +24,22 @@ router.post('/create', (req, res) => {
       const errors = DBErrorParser(err);
       res.status(400).send(errors);
     });
+});
+
+// GET route
+router.get('/', (req, res) => {
+  try {
+    const { notes } = req.user;
+    const sortedNotes = notes.sort((a, b) => {
+      return b.createdAt - a.createdAt
+    });
+
+    res.json(sortedNotes);
+
+  } catch (err) {
+    const errors = DBErrorParser(err);
+    res.status(400).send(errors);
+  }
 });
 
 // PATCH routes
